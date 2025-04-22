@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dotson the Superhero</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 2rem;
+      background: #f7f7f7;
+    }
+    img {
+      max-width: 90%;
+      border-radius: 15px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+<body>
+  <h1>Dotson the Superhero</h1>
+  <p>A new dachshund superhero appears every hour!</p>
+  <img id="hero" src="" alt="Superdog of the Hour" />
+
+  <script>
+    const hour = new Date().getUTCHours();
+    document.getElementById("hero").src = `images/superdog-hour-${hour}.png`;
+  </script>
+</body>
+</html>
