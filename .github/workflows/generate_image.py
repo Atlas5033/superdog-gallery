@@ -3,18 +3,23 @@ import torch
 from datetime import datetime
 import os
 
+print("Loading model...")
 pipe = StableDiffusionXLPipeline.from_pretrained(
-    "stabilityai/stable-diffusion-3.5-large",
+    "stabilityai/sdxl-turbo",
     use_auth_token=os.getenv("HF_TOKEN"),
-    torch_dtype=torch.float16,
-).to("cuda" if torch.cuda.is_available() else "cpu")
+    torch_dtype=torch.float32  # Use float32 for CPU
+).to("cpu")
 
+# Use the current hour
 hour = datetime.utcnow().hour
 filename = f"images/superdog-hour-{hour}.png"
 
-prompt = "A cartoon dachshund dog in a superhero costume flying through the sky, colorful, comic book style"
+prompt = "A cartoon dachshund in a superhero costume flying through the sky, comic book style"
 
-image = pipe(prompt).images[0]
+print("Generating image...")
+image = pipe(prompt, num_inference_steps=1, guidance_scale=0.0).images[0]
 
+print("Saving image...")
 os.makedirs("images", exist_ok=True)
 image.save(filename)
+print(f"✅ Saved image as: {filename}")
