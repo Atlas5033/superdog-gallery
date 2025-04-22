@@ -23,10 +23,10 @@ jobs:
           pip install diffusers torch accelerate
 
       - name: Run image generator
-  run: python ./generate_image.py
-  working-directory: ${{ github.workspace }}
-  env:
-    HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: python ./generate_image.py
+        working-directory: ${{ github.workspace }}
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
 
 
       - name: Commit and push new image
