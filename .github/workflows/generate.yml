@@ -24,7 +24,6 @@ jobs:
 
       - name: Run image generator
         run: python ./generate_image.py
-        working-directory: ${{ github.workspace }}
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
 
