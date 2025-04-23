@@ -20,7 +20,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install diffusers torch accelerate
+          pip install diffusers torch accelerate transformers
 
       - name: Run image generator
         run: python ./generate_image.py
