@@ -1,41 +1,36 @@
-name: Generate Superdog Image Hourly
+from diffusers import StableDiffusionXLPipeline
+import torch
+from datetime import datetime
+import os
 
-on:
-  schedule:
-    - cron: '0 * * * *'
-  workflow_dispatch:
+print("🔄 Loading model...")
+pipe = StableDiffusionXLPipeline.from_pretrained(
+    "stabilityai/sdxl-turbo",
+    use_auth_token=os.getenv("HF_TOKEN"),
+    torch_dtype=torch.float32
+).to("cpu")
+print("✅ Model loaded")
 
-jobs:
-  generate-image:
-    runs-on: ubuntu-latest
+# Current hour
+hour = datetime.utcnow().hour
+filename = f"images/superdog-hour-{hour}.png"
 
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
+# Prompt
+prompt = "A cartoon dachshund in a superhero costume flying through the sky, comic book style"
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
+print("🎨 Generating image...")
+try:
+    image = pipe(prompt, num_inference_steps=1, guidance_scale=0.0).images[0]
+    print("✅ Image generated")
+except Exception as e:
+    print("❌ Failed to generate image:", e)
+    exit(1)
 
-      - name: Install dependencies
-        run: |
-          pip install diffusers torch accelerate transformers
-
-      - name: Run image generator
-        run: python ./generate_image.py
-        env:
-          HF_TOKEN: ${{ secrets.HF_TOKEN }}
-
-      - name: Override origin remote with PAT
-        run: |
-          git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/Atlas5033/superdog-gallery.git
-
-      - name: Commit and push new image
-        run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "actions@github.com"
-          git add images/
-          git commit -m "New image for hour" || echo "🟡 Nothing to commit"
-          git push origin HEAD:main
-        continue-on-error: true
+# Save
+try:
+    os.makedirs("images", exist_ok=True)
+    image.save(filename)
+    print(f"✅ Image saved as {filename}")
+except Exception as e:
+    print("❌ Failed to save image:", e)
+    exit(1)
