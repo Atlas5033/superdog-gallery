@@ -27,6 +27,11 @@ jobs:
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN  }}
 
+      - name: Show remote URL and user
+        run: |
+          git remote -v
+          git config --get remote.origin.url
+
       - name: Commit and push new image
         run: |
           git config --global user.name "github-actions"
