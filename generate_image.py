@@ -11,26 +11,14 @@ pipe = StableDiffusionXLPipeline.from_pretrained(
 ).to("cpu")
 print("✅ Model loaded")
 
-# Current hour
 hour = datetime.utcnow().hour
 filename = f"images/superdog-hour-{hour}.png"
-
-# Prompt
 prompt = "A cartoon dachshund in a superhero costume flying through the sky, comic book style"
 
 print("🎨 Generating image...")
-try:
-    image = pipe(prompt, num_inference_steps=1, guidance_scale=0.0).images[0]
-    print("✅ Image generated")
-except Exception as e:
-    print("❌ Failed to generate image:", e)
-    exit(1)
+image = pipe(prompt, num_inference_steps=1, guidance_scale=0.0).images[0]
+print("✅ Image generated")
 
-# Save
-try:
-    os.makedirs("images", exist_ok=True)
-    image.save(filename)
-    print(f"✅ Image saved as {filename}")
-except Exception as e:
-    print("❌ Failed to save image:", e)
-    exit(1)
+os.makedirs("images", exist_ok=True)
+image.save(filename)
+print(f"✅ Image saved as {filename}")
