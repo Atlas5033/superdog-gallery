@@ -1,3 +1,5 @@
+# Force re-index
+
 name: Generate Superdog Image Hourly
 
 on:
