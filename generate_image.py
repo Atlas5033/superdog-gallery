@@ -22,3 +22,7 @@ print("✅ Image generated")
 os.makedirs("images", exist_ok=True)
 image.save(filename)
 print(f"✅ Image saved as {filename}")
+
+# Also save as latest.png for website display
+image.save("images/latest.png")
+print("✅ Also saved as images/latest.png")
