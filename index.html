@@ -2,14 +2,13 @@
 <html lang="en">
 <head>
   <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-7RS8V4F79W"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-7RS8V4F79W');
-</script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7RS8V4F79W"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-7RS8V4F79W');
+  </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Super Smidge</title>
@@ -33,8 +32,8 @@
   <img id="hero" src="" alt="Superdog of the Hour" />
 
   <script>
-    const hour = new Date().getUTCHours();
-    document.getElementById("hero").src = `images/superdog-hour-${hour}.png`;
+    const timestamp = new Date().getTime();
+    document.getElementById("hero").src = `images/latest.png?t=${timestamp}`;
   </script>
 </body>
 </html>
