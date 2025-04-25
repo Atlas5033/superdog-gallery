@@ -27,15 +27,21 @@ jobs:
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
 
-      - name: Keep only the last 24 images
-        run: |
-          ls -t images/superdog-hour-*.png | tail -n +25 | xargs rm -f || true
-
       - name: Commit and push new image
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "actions@github.com"
           git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/${{ github.repository }}
           git add images/
-          git commit -m "🧹 New image added, old ones cleaned" || echo "🟡 Nothing to commit"
+          git commit -m "🆕 New image for hour" || echo "🟡 Nothing to commit"
+          git push origin HEAD:main
+
+      - name: Cleanup old images (keep 24 newest)
+        run: |
+          ls -t images/superdog-hour-*.png | tail -n +25 | xargs rm -f || true
+
+      - name: Commit cleanup
+        run: |
+          git add images/
+          git commit -m "🧹 Cleanup old images" || echo "🟡 Nothing to clean"
           git push origin HEAD:main
