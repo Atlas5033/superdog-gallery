@@ -135,6 +135,35 @@ for i, prompt in enumerate(frame_prompts, start=1):
         comic_image = pipe(prompt, num_inference_steps=1, guidance_scale=0.0).images[0]
         comic_image.save(f"images/frame-{i}.png")
         print(f"✅ Saved frame-{i}.png")
+        from PIL import Image
+
+# Combine 4 frames into a 2x2 comic strip
+try:
+    frame_paths = [f"images/frame-{i}.png" for i in range(1, 5)]
+    frames = [Image.open(fp) for fp in frame_paths]
+
+    # Resize frames to the same size (in case they're inconsistent)
+    width, height = frames[0].size
+    frames = [f.resize((width, height)) for f in frames]
+
+    # Create a new blank image for 2x2 layout
+    strip_width = width * 2
+    strip_height = height * 2
+    comic_strip = Image.new("RGB", (strip_width, strip_height))
+
+    # Paste frames into 2x2 grid
+    comic_strip.paste(frames[0], (0, 0))
+    comic_strip.paste(frames[1], (width, 0))
+    comic_strip.paste(frames[2], (0, height))
+    comic_strip.paste(frames[3], (width, height))
+
+    # Save the final comic strip
+    comic_strip.save("images/comic-strip.png")
+    print("✅ 2x2 comic strip saved as images/comic-strip.png")
+
+except Exception as e:
+    print("❌ Failed to generate 2x2 comic strip layout:", e)
+
     except Exception as e:
         print(f"❌ Error generating frame {i}: {e}")
 
