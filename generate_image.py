@@ -3,7 +3,9 @@ import torch
 from datetime import datetime
 import os
 import random
+from PIL import Image, ImageDraw, ImageFont
 
+# Define moods and comic templates
 moods_with_templates = {
     "Adventurous": [
         ["Smidge spots a mysterious cave in the forest.", "He steps inside, tail wagging with curiosity.",
@@ -91,8 +93,6 @@ moods_with_templates = {
     ]
 }
 
-}
-
 # Determine today's mood
 mood_keys = sorted(moods_with_templates.keys())
 today = datetime.utcnow().date()
@@ -100,7 +100,7 @@ mood_index = today.toordinal() % len(mood_keys)
 daily_mood = mood_keys[mood_index]
 frame_prompts = random.choice(moods_with_templates[daily_mood])
 
-# Load the model
+# Load model
 print("🔄 Loading model...")
 try:
     pipe = StableDiffusionXLPipeline.from_pretrained(
@@ -113,15 +113,15 @@ except Exception as e:
     exit(1)
 print("✅ Model loaded")
 
-# Ensure output directory exists
+# Create output folder
 os.makedirs("images", exist_ok=True)
 
-# Generate hourly hero image
+# Generate Superdog image of the hour
 hour = datetime.utcnow().hour
-hourly_prompt = "A cartoon dachshund in a superhero costume flying through the sky, comic book style"
 try:
+    prompt = "A cartoon dachshund in a superhero costume flying through the sky, comic book style"
     print(f"🎨 Generating Superdog of the Hour ({hour})...")
-    image = pipe(hourly_prompt, num_inference_steps=1, guidance_scale=0.0).images[0]
+    image = pipe(prompt, num_inference_steps=1, guidance_scale=0.0).images[0]
     image.save(f"images/superdog-hour-{hour}.png")
     image.save("images/latest.png")
     print("✅ Superdog image saved")
@@ -129,45 +129,46 @@ except Exception as e:
     print("❌ Failed to generate hourly image:", e)
 
 # Generate 4-panel comic
+frame_paths = []
 for i, prompt in enumerate(frame_prompts, start=1):
     try:
         print(f"🎨 Generating frame {i}: {prompt}")
-        comic_image = pipe(prompt, num_inference_steps=1, guidance_scale=0.0).images[0]
-        comic_image.save(f"images/frame-{i}.png")
+        img = pipe(prompt, num_inference_steps=1, guidance_scale=0.0).images[0]
+        path = f"images/frame-{i}.png"
+        img.save(path)
+        frame_paths.append(path)
         print(f"✅ Saved frame-{i}.png")
-        from PIL import Image
+    except Exception as e:
+        print(f"❌ Error generating frame {i}: {e}")
 
-# Combine 4 frames into a 2x2 comic strip
+# Create 2x2 comic strip
 try:
-    frame_paths = [f"images/frame-{i}.png" for i in range(1, 5)]
     frames = [Image.open(fp) for fp in frame_paths]
-
-    # Resize frames to the same size (in case they're inconsistent)
     width, height = frames[0].size
-    frames = [f.resize((width, height)) for f in frames]
-
-    # Create a new blank image for 2x2 layout
-    strip_width = width * 2
-    strip_height = height * 2
-    comic_strip = Image.new("RGB", (strip_width, strip_height))
-
-    # Paste frames into 2x2 grid
+    comic_strip = Image.new("RGB", (width * 2, height * 2))
     comic_strip.paste(frames[0], (0, 0))
     comic_strip.paste(frames[1], (width, 0))
     comic_strip.paste(frames[2], (0, height))
     comic_strip.paste(frames[3], (width, height))
 
-    # Save the final comic strip
+    # Draw the mood title
+    draw = ImageDraw.Draw(comic_strip)
+    font_size = 48
+    try:
+        font = ImageFont.truetype("arial.ttf", font_size)
+    except:
+        font = ImageFont.load_default()
+    text = f"Today’s Mood: {daily_mood}"
+    text_width, text_height = draw.textsize(text, font=font)
+    draw.rectangle([0, 0, text_width + 40, text_height + 20], fill="white")
+    draw.text((20, 10), text, fill="black", font=font)
+
     comic_strip.save("images/comic-strip.png")
     print("✅ 2x2 comic strip saved as images/comic-strip.png")
-
 except Exception as e:
-    print("❌ Failed to generate 2x2 comic strip layout:", e)
+    print("❌ Failed to generate comic strip:", e)
 
-    except Exception as e:
-        print(f"❌ Error generating frame {i}: {e}")
-
-# Save the current mood for reference
+# Save the current mood text
 try:
     with open("images/mood.txt", "w") as f:
         f.write(daily_mood)
