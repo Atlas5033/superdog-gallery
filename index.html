@@ -24,16 +24,58 @@
       border-radius: 15px;
       box-shadow: 0 0 10px rgba(0,0,0,0.2);
     }
+    #comic {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    #comic div {
+      width: 200px;
+    }
+    #comic p {
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+    }
   </style>
 </head>
 <body>
   <h1>Superdog Smidge</h1>
   <p>The dachshund superhero bringing you joy and laughs every hour.</p>
-  <img id="hero" src="" alt="Superdog of the Hour" />
 
+  <img id="hero" src="" alt="Superdog of the Hour" />
   <script>
     const timestamp = new Date().getTime();
     document.getElementById("hero").src = `images/latest.png?t=${timestamp}`;
+  </script>
+
+  <h2>Today's Mood Comic: <span id="comic-mood">Loading...</span></h2>
+  <div id="comic">
+    <div>
+      <img src="images/frame-1.png" alt="Frame 1" />
+      <p id="caption1">Smidge's first adventure begins!</p>
+    </div>
+    <div>
+      <img src="images/frame-2.png" alt="Frame 2" />
+      <p id="caption2">A twist unfolds...</p>
+    </div>
+    <div>
+      <img src="images/frame-3.png" alt="Frame 3" />
+      <p id="caption3">Things get wild!</p>
+    </div>
+    <div>
+      <img src="images/frame-4.png" alt="Frame 4" />
+      <p id="caption4">Smidge saves the day!</p>
+    </div>
+  </div>
+
+  <script>
+    fetch('images/mood.txt')
+      .then(res => res.text())
+      .then(mood => {
+        document.getElementById('comic-mood').innerText = mood.trim();
+      });
   </script>
 </body>
 </html>
