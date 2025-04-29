@@ -129,31 +129,48 @@ for i, prompt in enumerate(frame_prompts, start=1):
     frame_paths.append(path)
     print(f"✅ Saved {path}")
 
-# Combine frames into 2x2 comic strip
+# Combine frames into 2x2 comic strip (with full debug)
 try:
+    print("📸 Starting comic strip assembly...")
+    print(f"🧾 Frame paths: {frame_paths}")
+
+    # Ensure all 4 frames exist
+    for fp in frame_paths:
+        if not os.path.exists(fp):
+            raise FileNotFoundError(f"Missing frame: {fp}")
+    print("✅ All frame files found.")
+
     frames = [Image.open(fp) for fp in frame_paths]
     width, height = frames[0].size
+    print(f"📐 Frame size: {width}x{height}")
+
     comic_strip = Image.new("RGB", (width * 2, height * 2), color=(255, 255, 255))
     comic_strip.paste(frames[0], (0, 0))
     comic_strip.paste(frames[1], (width, 0))
     comic_strip.paste(frames[2], (0, height))
     comic_strip.paste(frames[3], (width, height))
+    print("🧩 Frames pasted into canvas.")
 
-    # Add mood title
+    # Add mood text
     draw = ImageDraw.Draw(comic_strip)
-    font_size = 40
-    try:
-        font = ImageFont.truetype("arial.ttf", font_size)
-    except:
-        font = ImageFont.load_default()
     text = f"Today's Mood: {daily_mood}"
-    draw.rectangle([10, 10, 10 + draw.textsize(text, font=font)[0] + 10, 10 + 50], fill="white")
+    try:
+        font = ImageFont.truetype("arial.ttf", 40)
+    except Exception as font_error:
+        print("⚠️ Font fallback:", font_error)
+        font = ImageFont.load_default()
+    draw.rectangle([10, 10, 10 + draw.textsize(text, font=font)[0] + 20, 70], fill="white")
     draw.text((20, 20), text, font=font, fill="black")
+    print("🖋 Mood title drawn.")
 
-    comic_strip.save("images/comic-strip.png")
-    print("✅ Comic strip saved")
+    # Save final image
+    comic_path = "images/comic-strip.png"
+    comic_strip.save(comic_path)
+    print(f"✅ Comic strip saved to {comic_path}")
+
 except Exception as e:
-    print(f"❌ Failed to create comic strip: {e}")
+    print("❌ ERROR creating comic strip:", e)
+
 
 # Save today's mood
 with open("images/mood.txt", "w") as f:
