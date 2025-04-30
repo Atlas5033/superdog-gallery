@@ -149,7 +149,9 @@ try:
 
     # Add title at the top-left
     title_text = f"Today's Mood: {daily_mood}"
-    draw.rectangle([10, 10, 10 + font.getsize(title_text)[0] + 20, 50], fill="white")
+    bbox = draw.textbbox((0, 0), title_text, font=font)
+    draw.rectangle([10, 10, 10 + (bbox[2] - bbox[0]) + 20, 50], fill="white")
+
     draw.text((20, 20), title_text, fill="black", font=font)
 
     comic_strip.save("images/comic-strip.png")
