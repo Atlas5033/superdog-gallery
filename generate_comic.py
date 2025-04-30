@@ -115,7 +115,7 @@ os.makedirs("images", exist_ok=True)
 frame_paths = []
 for i, prompt in enumerate(frame_prompts, start=1):
     print(f"🎨 Generating frame {i}: {prompt}")
-    full_prompt = f"A cartoon dachshund superhero named Smidge, comic book style. {prompt}"
+    full_prompt = f"A clean cartoon illustration of a dachshund superhero named Smidge, no text, no captions. {prompt}"
     image = pipe(full_prompt, num_inference_steps=5, guidance_scale=1.5).images[0]
     path = f"images/frame-{i}.png"
     image.save(path)
