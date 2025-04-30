@@ -93,14 +93,14 @@ moods_with_templates = {
     ]
 }
 
-# Select mood for today
+# Select today's mood and story
 mood_keys = sorted(moods_with_templates.keys())
 today = datetime.utcnow().date()
 mood_index = today.toordinal() % len(mood_keys)
 daily_mood = mood_keys[mood_index]
 frame_prompts = random.choice(moods_with_templates[daily_mood])
 
-# Load model
+# Load AI model
 print("🔄 Loading model...")
 pipe = StableDiffusionXLPipeline.from_pretrained(
     "stabilityai/sdxl-turbo",
@@ -111,46 +111,52 @@ print("✅ Model loaded")
 
 os.makedirs("images", exist_ok=True)
 
-# Generate 4 comic panels
+# Generate 4 image frames
 frame_paths = []
 for i, prompt in enumerate(frame_prompts, start=1):
     print(f"🎨 Generating frame {i}: {prompt}")
-
-    # Add context so the model knows who Smidge is
     full_prompt = f"A cartoon dachshund superhero named Smidge, comic book style. {prompt}"
-
     image = pipe(full_prompt, num_inference_steps=5, guidance_scale=1.5).images[0]
     path = f"images/frame-{i}.png"
     image.save(path)
     frame_paths.append(path)
     print(f"✅ Saved {path}")
 
-
-# Combine into 2x2 comic
+# Combine into 2x2 grid with captions
 try:
     frames = [Image.open(fp) for fp in frame_paths]
     width, height = frames[0].size
-    comic_strip = Image.new("RGB", (width * 2, height * 2), color=(255, 255, 255))
-    comic_strip.paste(frames[0], (0, 0))
-    comic_strip.paste(frames[1], (width, 0))
-    comic_strip.paste(frames[2], (0, height))
-    comic_strip.paste(frames[3], (width, height))
+    caption_height = 40
+    padded_height = height + caption_height
+    comic_strip = Image.new("RGB", (width * 2, padded_height * 2), color=(255, 255, 255))
 
-    # Add title
-    draw = ImageDraw.Draw(comic_strip)
-    text = f"Today's Mood: {daily_mood}"
     try:
-        font = ImageFont.truetype("arial.ttf", 40)
+        font = ImageFont.truetype("arial.ttf", 20)
     except:
         font = ImageFont.load_default()
-    draw.rectangle([10, 10, 500, 70], fill="white")
-    draw.text((20, 20), text, fill="black", font=font)
+
+    draw = ImageDraw.Draw(comic_strip)
+
+    for idx, (img, caption) in enumerate(zip(frames, frame_prompts)):
+        row = idx // 2
+        col = idx % 2
+        x = col * width
+        y = row * padded_height
+
+        comic_strip.paste(img, (x, y))
+        draw.rectangle([x, y + height, x + width, y + padded_height], fill="white")
+        draw.text((x + 10, y + height + 10), caption, fill="black", font=font)
+
+    # Add title at the top-left
+    title_text = f"Today's Mood: {daily_mood}"
+    draw.rectangle([10, 10, 10 + font.getsize(title_text)[0] + 20, 50], fill="white")
+    draw.text((20, 20), title_text, fill="black", font=font)
 
     comic_strip.save("images/comic-strip.png")
-    print("✅ Comic strip saved")
+    print("✅ Comic strip with captions saved")
 
 except Exception as e:
-    print("❌ Failed to create comic strip:", e)
+    print("❌ Failed to create captioned comic strip:", e)
 
 # Save mood label
 with open("images/mood.txt", "w") as f:
