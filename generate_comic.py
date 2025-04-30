@@ -147,13 +147,6 @@ try:
         draw.rectangle([x, y + height, x + width, y + padded_height], fill="white")
         draw.text((x + 10, y + height + 10), caption, fill="black", font=font)
 
-    # Add title at the top-left
-    title_text = f"Today's Mood: {daily_mood}"
-    bbox = draw.textbbox((0, 0), title_text, font=font)
-    draw.rectangle([10, 10, 10 + (bbox[2] - bbox[0]) + 20, 50], fill="white")
-
-    draw.text((20, 20), title_text, fill="black", font=font)
-
     comic_strip.save("images/comic-strip.png")
     print("✅ Comic strip with captions saved")
 
