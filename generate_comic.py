@@ -160,9 +160,10 @@ try:
         comic_strip.paste(img, (x, y))
         draw.rectangle([x, y + height, x + width, y + padded_height], fill="white")
         wrapped = wrap_text(caption, font, width - 20)  # wrap to panel width
-    for line_num, line in enumerate(wrapped):
-        line_y = y + height + 10 + (line_num * font.size)
-        draw.text((x + 10, line_y), line, fill="black", font=font)
+        
+        for line_num, line in enumerate(wrapped):
+            line_y = y + height + 10 + (line_num * font.size)
+            draw.text((x + 10, line_y), line, fill="black", font=font)
 
 
     comic_strip.save("images/comic-strip.png")
