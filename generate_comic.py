@@ -123,6 +123,22 @@ for i, prompt in enumerate(frame_prompts, start=1):
     print(f"✅ Saved {path}")
 
 # Combine into 2x2 grid with captions
+
+def wrap_text(text, font, max_width):
+    lines = []
+    words = text.split()
+    line = ""
+    for word in words:
+        test_line = f"{line} {word}".strip()
+        if font.getlength(test_line) <= max_width:
+            line = test_line
+        else:
+            lines.append(line)
+            line = word
+    if line:
+        lines.append(line)
+    return lines
+
 try:
     frames = [Image.open(fp) for fp in frame_paths]
     width, height = frames[0].size
