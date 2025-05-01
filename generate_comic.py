@@ -142,7 +142,7 @@ def wrap_text(text, font, max_width):
 try:
     frames = [Image.open(fp) for fp in frame_paths]
     width, height = frames[0].size
-    caption_height = 40
+    caption_height = 100
     padded_height = height + caption_height
     comic_strip = Image.new("RGB", (width * 2, padded_height * 2), color=(255, 255, 255))
 
@@ -159,7 +159,11 @@ try:
 
         comic_strip.paste(img, (x, y))
         draw.rectangle([x, y + height, x + width, y + padded_height], fill="white")
-        draw.text((x + 10, y + height + 10), caption, fill="black", font=font)
+        wrapped = wrap_text(caption, font, width - 20)  # wrap to panel width
+    for line_num, line in enumerate(wrapped):
+        line_y = y + height + 10 + (line_num * font.size)
+        draw.text((x + 10, line_y), line, fill="black", font=font)
+
 
     comic_strip.save("images/comic-strip.png")
     print("✅ Comic strip with captions saved")
