@@ -131,7 +131,7 @@ try:
     comic_strip = Image.new("RGB", (width * 2, padded_height * 2), color=(255, 255, 255))
 
     font_path = os.path.join(os.path.dirname(__file__), "Arial.ttf")
-    font = ImageFont.truetype(font_path, 48)
+    font = ImageFont.truetype(font_path, 20)
 
     draw = ImageDraw.Draw(comic_strip)
 
