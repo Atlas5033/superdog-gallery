@@ -130,7 +130,7 @@ try:
     padded_height = height + caption_height
     comic_strip = Image.new("RGB", (width * 2, padded_height * 2), color=(255, 255, 255))
 
-   import os
+import os
 from PIL import ImageFont
 
 font_path = os.path.join(os.path.dirname(__file__), "Arial.ttf")
