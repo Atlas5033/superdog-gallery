@@ -142,7 +142,7 @@ def wrap_text(text, font, max_width):
 try:
     frames = [Image.open(fp) for fp in frame_paths]
     width, height = frames[0].size
-    caption_height = 100
+    caption_height = 120
     padded_height = height + caption_height
     comic_strip = Image.new("RGB", (width * 2, padded_height * 2), color=(255, 255, 255))
 
