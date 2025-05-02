@@ -32,10 +32,11 @@ jobs:
           git config --global user.name "github-actions"
           git config --global user.email "actions@github.com"
           git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/${{ github.repository }}
+          git add images/  # ✅ stage changes BEFORE pulling
           git pull --rebase origin main
-          git add images/
           git commit -m "🆕 New image for hour" || echo "🟡 Nothing to commit"
           git push origin HEAD:main
+
 
       - name: Cleanup old images (keep 24 newest)
         run: |
