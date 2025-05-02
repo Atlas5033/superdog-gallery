@@ -1,5 +1,3 @@
-# Force re-index
-
 name: Generate Superdog Image Hourly
 
 on:
@@ -34,6 +32,7 @@ jobs:
           git config --global user.name "github-actions"
           git config --global user.email "actions@github.com"
           git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/${{ github.repository }}
+          git pull --rebase origin main
           git add images/
           git commit -m "🆕 New image for hour" || echo "🟡 Nothing to commit"
           git push origin HEAD:main
@@ -44,6 +43,9 @@ jobs:
 
       - name: Commit cleanup
         run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+          git pull --rebase origin main
           git add images/
           git commit -m "🧹 Cleanup old images" || echo "🟡 Nothing to clean"
           git push origin HEAD:main
