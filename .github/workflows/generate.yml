@@ -46,7 +46,8 @@ jobs:
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "actions@github.com"
+          git add images/  # ✅ stage deletions BEFORE pulling
           git pull --rebase origin main
-          git add images/
           git commit -m "🧹 Cleanup old images" || echo "🟡 Nothing to clean"
           git push origin HEAD:main
+
