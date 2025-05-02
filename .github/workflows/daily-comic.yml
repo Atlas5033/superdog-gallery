@@ -43,4 +43,3 @@ jobs:
             git commit -m "🤖 Daily mood comic update"
             git push
           fi
-
