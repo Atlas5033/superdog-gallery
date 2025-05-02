@@ -28,9 +28,6 @@
       border-radius: 15px;
       box-shadow: 0 0 10px rgba(0,0,0,0.2);
     }
-    #comic {
-      margin-top: 2rem;
-    }
     nav {
       margin-bottom: 2rem;
     }
@@ -39,6 +36,18 @@
       color: #007BFF;
       margin: 0 1rem;
       font-weight: bold;
+    }
+    #cta {
+      margin-top: 2rem;
+    }
+    #cta a {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      background-color: #007BFF;
+      color: white;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 1.1rem;
     }
   </style>
 </head>
@@ -50,9 +59,9 @@
   </nav>
 
   <h1>Superdog Smidge</h1>
-  <p>The dachshund superhero bringing you joy and laughs every hour.</p>
+  <p>Superdog Smidge brings joy and laughs to your day, one heroic moment at a time.</p>
 
-  <!-- Superdog of the Hour -->
+  <!-- First Panel Teaser -->
   <img id="hero" src="" alt="Superdog of the Hour" />
 
   <script>
@@ -62,11 +71,6 @@
 
   <h2>Today's Mood: <span id="comic-mood">Loading...</span></h2>
 
-  <!-- Full Comic Strip -->
-  <div id="comic">
-    <img id="comic-strip" src="" alt="Mood Comic of the Day" />
-  </div>
-
   <script>
     // Load mood text with cache-busting
     fetch(`images/mood.txt?t=${Date.now()}`)
@@ -74,10 +78,12 @@
       .then(mood => {
         document.getElementById('comic-mood').innerText = mood.trim();
       });
-
-    // Load comic strip image with cache busting
-    document.getElementById("comic-strip").src = `images/comic-strip.png?t=${timestamp}`;
   </script>
+
+  <!-- Call to Action -->
+  <div id="cta">
+    <a href="latest.html">🦴 Read Today’s Full Comic</a>
+  </div>
 
 </body>
 </html>
