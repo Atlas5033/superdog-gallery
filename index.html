@@ -56,7 +56,7 @@
   <img id="hero" src="" alt="Superdog of the Hour" />
 
   <script>
-    const timestamp = new Date().getTime();
+    const timestamp = Date.now();
     document.getElementById("hero").src = `images/latest.png?t=${timestamp}`;
   </script>
 
@@ -68,8 +68,8 @@
   </div>
 
   <script>
-    // Load mood text
-    fetch('images/mood.txt')
+    // Load mood text with cache-busting
+    fetch(`images/mood.txt?t=${Date.now()}`)
       .then(res => res.text())
       .then(mood => {
         document.getElementById('comic-mood').innerText = mood.trim();
