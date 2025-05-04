@@ -41,8 +41,10 @@ jobs:
           git config --global user.name "github-actions"
           git config --global user.email "actions@github.com"
           git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/${{ github.repository }}
-          git add .  # ✅ Stage everything early to avoid unstaged changes error
+          git stash --include-untracked  # ✅ Safely stash everything
           git pull --rebase origin main
+          git stash pop || true          # ✅ Re-apply stashed changes (ignore conflict if none)
+          git add .
           git commit -m "🌟 Auto-update: Comic and latest.html" || echo "🟡 Nothing to commit"
           git push
 
