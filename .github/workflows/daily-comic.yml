@@ -41,9 +41,11 @@ jobs:
           git config --global user.name "github-actions"
           git config --global user.email "actions@github.com"
           git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/${{ github.repository }}
+          git pull --rebase origin main  # ✅ this is the missing line to prevent push rejection
           git add images/ latest.html
           git commit -m "🌟 Auto-update: Comic and latest.html" || echo "🟡 Nothing to commit"
           git push
+
 
       - name: Add link to comic page
         run: |
