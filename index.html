@@ -11,8 +11,7 @@
   </script>
 
   <!-- Google AdSense -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-9410175300514135"
-    crossorigin="anonymous"></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-9410175300514135" crossorigin="anonymous"></script>
 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -50,6 +49,9 @@
       font-size: 1.5rem;
       margin-top: 2rem;
     }
+    .ad-container {
+      margin: 2rem 0;
+    }
     footer {
       margin-top: 3rem;
       font-size: 0.9rem;
@@ -66,7 +68,18 @@
   </nav>
 
   <h1>Welcome to Superdog Smidge!</h1>
-  <p>Every day, Super Smidge takes on a new mood — from joyful to frustrated, silly to serious — and turns it into a 4-panel comic adventure using AI-powered creativity and a little dachshund charm.</p>
+  <p>Every day, Super Smidge faces a fresh emotion — from joy to frustration, playfulness to uncertainty — and turns it into a comic book adventure powered by AI and a heroic dachshund spirit. These bite-sized comics are made to brighten your day and explore what it means to feel.</p>
+
+  <!-- Top AdSense Unit -->
+  <div class="ad-container">
+    <ins class="adsbygoogle"
+      style="display:block"
+      data-ad-client="ca-pub-9410175300514135"
+      data-ad-slot="1234567890"  <!-- Replace this with your real slot ID -->
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
 
   <!-- Mood Image Preview -->
   <h2>Super Smidge of the Hour</h2>
@@ -91,7 +104,7 @@
   <img src="images/comic-strip.png" alt="Super Smidge Comic Strip" />
 
   <!-- Comic Description -->
-  <p>In this adventure, Super Smidge experiences <strong><span id="mood-description">an emotion</span></strong> in all its colorful glory. Through each panel, Smidge helps us reflect on how moods shape our day — and how even small heroes face big feelings.</p>
+  <p>In this comic, Super Smidge navigates <strong><span id="mood-description">an emotion</span></strong> with courage, curiosity, and a little bit of sass. Whether he’s flying through clouds of confusion or climbing cliffs of joy, each panel shows how even small heroes take big emotional steps.</p>
   <script>
     fetch(`images/mood.txt?t=${Date.now()}`)
       .then(res => res.text())
@@ -99,6 +112,17 @@
         document.getElementById('mood-description').innerText = mood.trim();
       });
   </script>
+
+  <!-- Bottom AdSense Unit -->
+  <div class="ad-container">
+    <ins class="adsbygoogle"
+      style="display:block"
+      data-ad-client="ca-pub-9410175300514135"
+      data-ad-slot="9876543210"  <!-- Replace this with your real slot ID -->
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
 
   <footer>
     &copy; 2025 Superdog Smidge. All rights reserved.
