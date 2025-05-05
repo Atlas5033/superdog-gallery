@@ -10,8 +10,9 @@
     gtag('config', 'G-7RS8V4F79W');
   </script>
 
-  <!-- AdSense -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9410175300514135" crossorigin="anonymous"></script>
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js?client=ca-pub-9410175300514135"
+    crossorigin="anonymous"></script>
 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -28,9 +29,10 @@
       margin: auto;
     }
     img {
-      max-width: 90%;
+      max-width: 100%;
       border-radius: 15px;
       box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      margin-bottom: 1.5rem;
     }
     nav {
       margin-bottom: 2rem;
@@ -41,17 +43,12 @@
       margin: 0 1rem;
       font-weight: bold;
     }
-    #cta {
-      margin-top: 2rem;
+    h1 {
+      font-size: 2rem;
     }
-    #cta a {
-      display: inline-block;
-      padding: 0.75rem 1.5rem;
-      background-color: #007BFF;
-      color: white;
-      border-radius: 8px;
-      text-decoration: none;
-      font-size: 1.1rem;
+    h2 {
+      font-size: 1.5rem;
+      margin-top: 2rem;
     }
     footer {
       margin-top: 3rem;
@@ -64,28 +61,24 @@
 
   <nav>
     <a href="index.html">Home</a>
-    <a href="latest.html">📖 View Full Comic</a>
     <a href="about.html">About</a>
     <a href="privacy.html">Privacy</a>
   </nav>
 
   <h1>Welcome to Superdog Smidge!</h1>
-  <p>Superdog Smidge brings joy and laughs to your day, one heroic moment at a time. Each day, this brave little dachshund takes on a new mood — and turns it into a 4-panel comic adventure.</p>
+  <p>Every day, Super Smidge takes on a new mood — from joyful to frustrated, silly to serious — and turns it into a 4-panel comic adventure using AI-powered creativity and a little dachshund charm.</p>
 
-  <p>Whether Smidge is facing fear, celebrating triumph, or just being adorably confused, every comic captures a slice of emotional life through heroic dog eyes. Come back daily to see what mood Smidge tackles next!</p>
-
-  <!-- First Panel Teaser -->
-  <img id="hero" src="" alt="Superdog of the Hour" />
-
+  <!-- Mood Image Preview -->
+  <h2>Super Smidge of the Hour</h2>
+  <img id="hero" src="" alt="Superdog Mood Image" />
   <script>
     const timestamp = Date.now();
     document.getElementById("hero").src = `images/latest.png?t=${timestamp}`;
   </script>
 
+  <!-- Mood Text -->
   <h2>Today's Mood: <span id="comic-mood">Loading...</span></h2>
-
   <script>
-    // Load mood text with cache-busting
     fetch(`images/mood.txt?t=${Date.now()}`)
       .then(res => res.text())
       .then(mood => {
@@ -93,13 +86,22 @@
       });
   </script>
 
-  <!-- Call to Action -->
-  <div id="cta">
-    <a href="latest.html">🦴 Read Today’s Full Comic</a>
-  </div>
+  <!-- Full Comic Strip -->
+  <h2>Today's Comic</h2>
+  <img src="images/comic-strip.png" alt="Super Smidge Comic Strip" />
+
+  <!-- Comic Description -->
+  <p>In this adventure, Super Smidge experiences <strong><span id="mood-description">an emotion</span></strong> in all its colorful glory. Through each panel, Smidge helps us reflect on how moods shape our day — and how even small heroes face big feelings.</p>
+  <script>
+    fetch(`images/mood.txt?t=${Date.now()}`)
+      .then(res => res.text())
+      .then(mood => {
+        document.getElementById('mood-description').innerText = mood.trim();
+      });
+  </script>
 
   <footer>
-    <p>&copy; 2025 Superdog Smidge. All rights reserved.</p>
+    &copy; 2025 Superdog Smidge. All rights reserved.
   </footer>
 
 </body>
