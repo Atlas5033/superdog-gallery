@@ -83,7 +83,6 @@
     </script>
   </div>
 
-  <!-- Mood Image Preview -->
   <h2>Super Smidge of the Hour</h2>
   <img id="hero" src="" alt="Superdog Mood Image" />
   <script>
@@ -91,7 +90,6 @@
     document.getElementById("hero").src = `images/latest.png?t=${timestamp}`;
   </script>
 
-  <!-- Mood Text -->
   <h2>Today's Mood: <span id="comic-mood">Loading...</span></h2>
   <script>
     fetch(`images/mood.txt?t=${Date.now()}`)
@@ -101,12 +99,10 @@
       });
   </script>
 
-  <!-- Full Comic Strip -->
   <h2>Today's Comic</h2>
   <img src="images/comic-strip.png" alt="Super Smidge Comic Strip" />
 
-  <!-- Comic Description -->
-  <p>In this comic, Super Smidge navigates <strong><span id="mood-description">an emotion</span></strong> with courage, curiosity, and a little bit of sass. Whether he’s flying through clouds of confusion or climbing cliffs of joy, each panel shows how even small heroes take big emotional steps.</p>
+  <p>In this comic, Super Smidge navigates <strong><span id="mood-description">an emotion</span></strong> with courage, curiosity, and a little bit of sass. Whether she’s flying through clouds of confusion or climbing cliffs of joy, each panel shows how even small heroes take big emotional steps.</p>
   <script>
     fetch(`images/mood.txt?t=${Date.now()}`)
       .then(res => res.text())
